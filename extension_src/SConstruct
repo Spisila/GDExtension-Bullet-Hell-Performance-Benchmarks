@@ -1,0 +1,23 @@
+import os
+
+# 1. Configuration
+lib_name = "bullet_manager"
+godot_cpp_path = "godot-cpp"
+binary_out_path = "../cpp-bullet-hell/bin/" 
+
+# 2. Initialize the environment
+env = SConscript(os.path.join(godot_cpp_path, "SConstruct"))
+
+# 3. Define where our source code is
+sources = Glob("src/*.cpp")
+
+# 4. Build the Shared Library
+env.Append(CPPPATH=["src/"])
+
+# Create the .dll / .so file
+library = env.SharedLibrary(
+    target=os.path.join(binary_out_path, lib_name),
+    source=sources,
+)
+
+Default(library)

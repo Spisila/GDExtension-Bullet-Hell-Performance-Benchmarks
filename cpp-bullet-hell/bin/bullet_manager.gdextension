@@ -1,0 +1,11 @@
+[configuration]
+entry_symbol = "my_extension_init"
+compatibility_minimum = "4.1"
+
+[libraries]
+macos.debug = "res://bin/libbullet_manager.macos.debug.framework"
+macos.release = "res://bin/libbullet_manager.macos.release.framework"
+windows.debug.x86_64 = "res://bin/bullet_manager.dll"
+windows.release.x86_64 = "res://bin/bullet_manager.dll"
+linux.debug.x86_64 = "res://bin/libbullet_manager.linux.template_debug.x86_64.so"
+linux.release.x86_64 = "res://bin/libbullet_manager.linux.template_release.x86_64.so"
