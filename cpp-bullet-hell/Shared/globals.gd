@@ -1,6 +1,6 @@
 extends Node
 
-var player : CharacterBody2D = null
+var player : Player = null
 
 var current_projectiles : int
 

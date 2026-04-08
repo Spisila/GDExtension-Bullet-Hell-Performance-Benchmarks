@@ -1,0 +1,2 @@
+class_name PoolingProjectile
+extends Sprite2D

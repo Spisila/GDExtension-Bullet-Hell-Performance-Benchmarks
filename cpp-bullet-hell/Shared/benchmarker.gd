@@ -5,7 +5,7 @@ extends Node2D
 var GD_ONLY_CSV = "res://Benchmarks/gd_only.txt"
 var OBJECT_POOLING = "res://Benchmarks/object_pooling.txt"
 
-@onready var bench_file = FileAccess.open(GD_ONLY_CSV, FileAccess.WRITE)
+@onready var bench_file = FileAccess.open(OBJECT_POOLING, FileAccess.WRITE)
 
 func _on_warm_up_timer_timeout() -> void:
 	take_benchmark.start()

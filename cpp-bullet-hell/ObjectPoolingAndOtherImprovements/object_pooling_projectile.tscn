@@ -1,0 +1,8 @@
+[gd_scene load_steps=2 format=3 uid="uid://dlubjexkqbd4c"]
+
+[ext_resource type="Texture2D" uid="uid://b5b60taaxpjnd" path="res://Shared/white circle 100 radius.png" id="1_jjen6"]
+
+[node name="ObjectPoolingProjectile" type="Sprite2D"]
+modulate = Color(1, 0, 0, 1)
+scale = Vector2(0.2, 0.2)
+texture = ExtResource("1_jjen6")

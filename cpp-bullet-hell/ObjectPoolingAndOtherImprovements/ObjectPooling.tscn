@@ -1,8 +1,9 @@
-[gd_scene load_steps=5 format=3 uid="uid://dgv4o75lb11fx"]
+[gd_scene load_steps=6 format=3 uid="uid://dgv4o75lb11fx"]
 
 [ext_resource type="Texture2D" uid="uid://bg2j7u7fkil0k" path="res://icon.svg" id="1_7pebf"]
 [ext_resource type="PackedScene" uid="uid://unuoaaf04wrp" path="res://Shared/Player.tscn" id="2_o2yfs"]
 [ext_resource type="Script" uid="uid://d1ayusltawd28" path="res://GDScriptOnlyAssets/gd_only_gui.gd" id="3_824ju"]
+[ext_resource type="Script" uid="uid://c6gcukdepqibc" path="res://ObjectPoolingAndOtherImprovements/projectile_manager.gd" id="4_o2yfs"]
 
 [sub_resource type="GDScript" id="GDScript_u3sec"]
 resource_name = "Main_Camera"
@@ -39,3 +40,13 @@ offset_right = 145.0
 offset_bottom = 47.0
 theme_override_font_sizes/font_size = 16
 text = "FPS"
+
+[node name="ProjectileManager" type="Node2D" parent="."]
+position = Vector2(0, -2176)
+script = ExtResource("4_o2yfs")
+
+[node name="LeftBorder" type="Marker2D" parent="ProjectileManager"]
+position = Vector2(3000, 0)
+
+[node name="RightBorder" type="Marker2D" parent="ProjectileManager"]
+position = Vector2(-3000, 0)
