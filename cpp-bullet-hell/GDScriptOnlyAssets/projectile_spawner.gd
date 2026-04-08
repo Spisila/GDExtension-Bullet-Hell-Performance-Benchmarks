@@ -7,19 +7,9 @@ const GD_ONLY_PROJECTILE = preload("uid://barf1fbrq84tc")
 
 @export var max_projectiles : int 
 
-var GD_ONLY_CSV = "res://Benchmarks/gd_only.txt"
-
-@onready var bench_file = FileAccess.open(GD_ONLY_CSV, FileAccess.WRITE)
-
-var spawning = false
-
-func _ready() -> void:
-	# Add warm up period for benchmarks
-	bench_file.store_line("Projectiles, Frame Time ms, FPS")
-
 func _process(_delta: float) -> void:
 	
-	if spawning == true :
+	if Globals.spawning == true :
 	
 		if Globals.current_projectiles < max_projectiles : 
 			
@@ -34,13 +24,3 @@ func _process(_delta: float) -> void:
 				get_tree().root.add_child(p)
 				
 				Globals.current_projectiles += 1
-
-
-func _on_save_benchmark_timer_timeout() -> void:
-	var frame_time = Performance.get_monitor(Performance.TIME_PROCESS)
-	print(str(Globals.current_projectiles) + " | " + str(1 / frame_time) + "|" + str(Engine.get_frames_per_second()))
-	bench_file.store_line(str(Globals.current_projectiles)+","+str(1 / frame_time)+","+str(Engine.get_frames_per_second()))
-
-
-func _on_warm_up_timer_timeout() -> void:
-	spawning = true

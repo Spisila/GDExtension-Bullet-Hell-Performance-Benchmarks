@@ -7,15 +7,6 @@
 [sub_resource type="GDScript" id="GDScript_u3sec"]
 resource_name = "Main_Camera"
 script/source = "extends Camera2D
-
-@onready var left_side: Marker2D = $LeftSide
-@onready var right_side: Marker2D = $RightSide
-@onready var down: Marker2D = $Down
-@onready var up: Marker2D = $Up
-
-func _physics_process(_delta: float) -> void:
-	pass
-	#self.global_position = Globals.player.global_position
 "
 
 [node name="ObjectPooling" type="Node2D"]

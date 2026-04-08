@@ -1,0 +1,16 @@
+[gd_scene load_steps=2 format=3 uid="uid://caiisog65daju"]
+
+[ext_resource type="Script" uid="uid://dlb5axswfdtj5" path="res://Shared/benchmarker.gd" id="1_ig8mk"]
+
+[node name="Benchmarker" type="Node2D"]
+script = ExtResource("1_ig8mk")
+
+[node name="TakeBenchmark" type="Timer" parent="."]
+
+[node name="WarmUpTimer" type="Timer" parent="."]
+wait_time = 2.0
+one_shot = true
+autostart = true
+
+[connection signal="timeout" from="TakeBenchmark" to="." method="_on_take_benchmark_timeout"]
+[connection signal="timeout" from="WarmUpTimer" to="." method="_on_warm_up_timer_timeout"]

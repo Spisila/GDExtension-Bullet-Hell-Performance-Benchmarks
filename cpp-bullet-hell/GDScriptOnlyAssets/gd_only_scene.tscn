@@ -1,9 +1,8 @@
-[gd_scene load_steps=7 format=3 uid="uid://b1ehk7quouc1w"]
+[gd_scene load_steps=6 format=3 uid="uid://b1ehk7quouc1w"]
 
 [ext_resource type="Texture2D" uid="uid://bg2j7u7fkil0k" path="res://icon.svg" id="1_l5ipi"]
 [ext_resource type="PackedScene" uid="uid://unuoaaf04wrp" path="res://Shared/Player.tscn" id="2_kfj5u"]
 [ext_resource type="Script" uid="uid://vkwgmv3rwsem" path="res://GDScriptOnlyAssets/projectile_spawner.gd" id="3_1qoc7"]
-[ext_resource type="PackedScene" uid="uid://barf1fbrq84tc" path="res://GDScriptOnlyAssets/gd_only_projectile.tscn" id="3_i81h2"]
 [ext_resource type="Script" uid="uid://d1ayusltawd28" path="res://GDScriptOnlyAssets/gd_only_gui.gd" id="5_nn7mq"]
 
 [sub_resource type="GDScript" id="GDScript_kfj5u"]
@@ -47,18 +46,6 @@ position = Vector2(0, 3000)
 [node name="RightBorder" type="Marker2D" parent="ProjectileSpawner"]
 position = Vector2(0, -3000)
 
-[node name="SaveBenchmarkTimer" type="Timer" parent="ProjectileSpawner"]
-autostart = true
-
-[node name="WarmUpTimer" type="Timer" parent="ProjectileSpawner"]
-wait_time = 5.0
-one_shot = true
-autostart = true
-
-[node name="Projectile" parent="." instance=ExtResource("3_i81h2")]
-position = Vector2(208, -344)
-rotation = 1.5707964
-
 [node name="GUI" type="CanvasLayer" parent="."]
 script = ExtResource("5_nn7mq")
 
@@ -74,6 +61,3 @@ offset_right = 145.0
 offset_bottom = 47.0
 theme_override_font_sizes/font_size = 16
 text = "FPS"
-
-[connection signal="timeout" from="ProjectileSpawner/SaveBenchmarkTimer" to="ProjectileSpawner" method="_on_save_benchmark_timer_timeout"]
-[connection signal="timeout" from="ProjectileSpawner/WarmUpTimer" to="ProjectileSpawner" method="_on_warm_up_timer_timeout"]
