@@ -1,0 +1,79 @@
+[gd_scene load_steps=7 format=3 uid="uid://b1ehk7quouc1w"]
+
+[ext_resource type="Texture2D" uid="uid://bg2j7u7fkil0k" path="res://icon.svg" id="1_l5ipi"]
+[ext_resource type="PackedScene" uid="uid://unuoaaf04wrp" path="res://Shared/Player.tscn" id="2_kfj5u"]
+[ext_resource type="Script" uid="uid://vkwgmv3rwsem" path="res://GDScriptOnlyAssets/projectile_spawner.gd" id="3_1qoc7"]
+[ext_resource type="PackedScene" uid="uid://barf1fbrq84tc" path="res://GDScriptOnlyAssets/gd_only_projectile.tscn" id="3_i81h2"]
+[ext_resource type="Script" uid="uid://d1ayusltawd28" path="res://GDScriptOnlyAssets/gd_only_gui.gd" id="5_nn7mq"]
+
+[sub_resource type="GDScript" id="GDScript_kfj5u"]
+resource_name = "Main_Camera"
+script/source = "extends Camera2D
+
+@onready var left_side: Marker2D = $LeftSide
+@onready var right_side: Marker2D = $RightSide
+@onready var down: Marker2D = $Down
+@onready var up: Marker2D = $Up
+
+func _physics_process(_delta: float) -> void:
+	pass
+	#self.global_position = Globals.player.global_position
+"
+
+[node name="GDScriptOnly" type="Node2D"]
+
+[node name="Floor" type="Sprite2D" parent="."]
+modulate = Color(0.23031491, 0.23031494, 0.23031494, 1)
+texture_repeat = 2
+texture = ExtResource("1_l5ipi")
+region_enabled = true
+region_rect = Rect2(1000, 1000, 100000, 100000)
+
+[node name="CharacterBody2D" parent="." instance=ExtResource("2_kfj5u")]
+
+[node name="MainCamera" type="Camera2D" parent="."]
+zoom = Vector2(0.2, 0.2)
+script = SubResource("GDScript_kfj5u")
+
+[node name="ProjectileSpawner" type="Marker2D" parent="."]
+position = Vector2(0, -2224)
+rotation = 1.5707964
+script = ExtResource("3_1qoc7")
+max_projectiles = 10000
+
+[node name="LeftBorder" type="Marker2D" parent="ProjectileSpawner"]
+position = Vector2(0, 3000)
+
+[node name="RightBorder" type="Marker2D" parent="ProjectileSpawner"]
+position = Vector2(0, -3000)
+
+[node name="SaveBenchmarkTimer" type="Timer" parent="ProjectileSpawner"]
+autostart = true
+
+[node name="WarmUpTimer" type="Timer" parent="ProjectileSpawner"]
+wait_time = 5.0
+one_shot = true
+autostart = true
+
+[node name="Projectile" parent="." instance=ExtResource("3_i81h2")]
+position = Vector2(208, -344)
+rotation = 1.5707964
+
+[node name="GUI" type="CanvasLayer" parent="."]
+script = ExtResource("5_nn7mq")
+
+[node name="ProjectileCounter" type="Label" parent="GUI"]
+offset_right = 40.0
+offset_bottom = 23.0
+theme_override_font_sizes/font_size = 16
+text = "Current Projectiles"
+
+[node name="FPS" type="Label" parent="GUI"]
+offset_top = 24.0
+offset_right = 145.0
+offset_bottom = 47.0
+theme_override_font_sizes/font_size = 16
+text = "FPS"
+
+[connection signal="timeout" from="ProjectileSpawner/SaveBenchmarkTimer" to="ProjectileSpawner" method="_on_save_benchmark_timer_timeout"]
+[connection signal="timeout" from="ProjectileSpawner/WarmUpTimer" to="ProjectileSpawner" method="_on_warm_up_timer_timeout"]

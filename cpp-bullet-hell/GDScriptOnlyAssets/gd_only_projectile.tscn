@@ -1,0 +1,42 @@
+[gd_scene load_steps=4 format=3 uid="uid://barf1fbrq84tc"]
+
+[ext_resource type="Texture2D" uid="uid://b5b60taaxpjnd" path="res://Shared/white circle 100 radius.png" id="1_81aiu"]
+
+[sub_resource type="GDScript" id="GDScript_81aiu"]
+resource_name = "GD_only_projectile"
+script/source = "extends Area2D
+
+@export var speed : float = 10
+
+func _physics_process(_delta: float) -> void:
+	self.global_position += transform.x * speed
+
+func _on_body_entered(body: Node2D) -> void:
+	if body is Player : 
+		body.health_component.take_damage(10)
+
+
+func _on_destroy_timer_timeout() -> void:
+	Globals.current_projectiles -= 1
+	self.queue_free()
+"
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_qrq4t"]
+radius = 20.0
+
+[node name="Projectile" type="Area2D"]
+script = SubResource("GDScript_81aiu")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+modulate = Color(1, 0, 0, 1)
+scale = Vector2(0.2, 0.2)
+texture = ExtResource("1_81aiu")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_qrq4t")
+
+[node name="DestroyTimer" type="Timer" parent="."]
+wait_time = 7.0
+
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]
+[connection signal="timeout" from="DestroyTimer" to="." method="_on_destroy_timer_timeout"]

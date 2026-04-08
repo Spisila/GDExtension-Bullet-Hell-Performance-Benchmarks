@@ -1,0 +1,27 @@
+[gd_scene load_steps=5 format=3 uid="uid://unuoaaf04wrp"]
+
+[ext_resource type="Script" uid="uid://dh7nnkrbnqq7c" path="res://Shared/Player.gd" id="1_i261i"]
+[ext_resource type="Script" uid="uid://d1orpp314734n" path="res://Shared/InputMovement.gd" id="2_okw7t"]
+[ext_resource type="Script" uid="uid://cw5bedu3t4dkc" path="res://Shared/health_component.gd" id="3_okw7t"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_yobno"]
+radius = 56.0
+
+[node name="CharacterBody2D" type="CharacterBody2D"]
+script = ExtResource("1_i261i")
+
+[node name="Polygon2D" type="Polygon2D" parent="."]
+color = Color(0.06999999, 0.22499985, 1, 1)
+polygon = PackedVector2Array(-64, 0, 0, -64, 64, 0, 0, 64)
+uv = PackedVector2Array(-64, 0, 0, -64, 64, 0, 0, 64)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_yobno")
+
+[node name="InputMovement" type="Node2D" parent="."]
+script = ExtResource("2_okw7t")
+movement_speed = 550.0
+
+[node name="HealthComponent" type="Node2D" parent="."]
+script = ExtResource("3_okw7t")
+max_health = 100.0

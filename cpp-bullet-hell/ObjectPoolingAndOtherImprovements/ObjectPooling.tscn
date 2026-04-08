@@ -1,0 +1,50 @@
+[gd_scene load_steps=5 format=3 uid="uid://dgv4o75lb11fx"]
+
+[ext_resource type="Texture2D" uid="uid://bg2j7u7fkil0k" path="res://icon.svg" id="1_7pebf"]
+[ext_resource type="PackedScene" uid="uid://unuoaaf04wrp" path="res://Shared/Player.tscn" id="2_o2yfs"]
+[ext_resource type="Script" uid="uid://d1ayusltawd28" path="res://GDScriptOnlyAssets/gd_only_gui.gd" id="3_824ju"]
+
+[sub_resource type="GDScript" id="GDScript_u3sec"]
+resource_name = "Main_Camera"
+script/source = "extends Camera2D
+
+@onready var left_side: Marker2D = $LeftSide
+@onready var right_side: Marker2D = $RightSide
+@onready var down: Marker2D = $Down
+@onready var up: Marker2D = $Up
+
+func _physics_process(_delta: float) -> void:
+	pass
+	#self.global_position = Globals.player.global_position
+"
+
+[node name="ObjectPooling" type="Node2D"]
+
+[node name="Floor" type="Sprite2D" parent="."]
+modulate = Color(0.23031491, 0.23031494, 0.23031494, 1)
+texture_repeat = 2
+texture = ExtResource("1_7pebf")
+region_enabled = true
+region_rect = Rect2(1000, 1000, 100000, 100000)
+
+[node name="CharacterBody2D" parent="." instance=ExtResource("2_o2yfs")]
+
+[node name="MainCamera" type="Camera2D" parent="."]
+zoom = Vector2(0.2, 0.2)
+script = SubResource("GDScript_u3sec")
+
+[node name="GUI" type="CanvasLayer" parent="."]
+script = ExtResource("3_824ju")
+
+[node name="ProjectileCounter" type="Label" parent="GUI"]
+offset_right = 40.0
+offset_bottom = 23.0
+theme_override_font_sizes/font_size = 16
+text = "Current Projectiles"
+
+[node name="FPS" type="Label" parent="GUI"]
+offset_top = 24.0
+offset_right = 145.0
+offset_bottom = 47.0
+theme_override_font_sizes/font_size = 16
+text = "FPS"
