@@ -1,0 +1,64 @@
+[gd_scene load_steps=9 format=3 uid="uid://b3c1ltwh1oks3"]
+
+[ext_resource type="Texture2D" uid="uid://bg2j7u7fkil0k" path="res://icon.svg" id="1_jnfyd"]
+[ext_resource type="PackedScene" uid="uid://unuoaaf04wrp" path="res://Shared/Player.tscn" id="2_dx4wb"]
+[ext_resource type="Script" uid="uid://d1ayusltawd28" path="res://GDScriptOnlyAssets/gd_only_gui.gd" id="3_1c5ew"]
+[ext_resource type="Script" uid="uid://cjpa5pml6qh41" path="res://ObjectPoolingAndOtherImprovements/projectile_manager_multimesh.gd" id="4_dx4wb"]
+[ext_resource type="Texture2D" uid="uid://b5b60taaxpjnd" path="res://Shared/white circle 100 radius.png" id="5_1c5ew"]
+
+[sub_resource type="GDScript" id="GDScript_u3sec"]
+resource_name = "Main_Camera"
+script/source = "extends Camera2D
+"
+
+[sub_resource type="QuadMesh" id="QuadMesh_dx4wb"]
+
+[sub_resource type="MultiMesh" id="MultiMesh_cjlmg"]
+mesh = SubResource("QuadMesh_dx4wb")
+
+[node name="ObjectPooling" type="Node2D"]
+
+[node name="Floor" type="Sprite2D" parent="."]
+modulate = Color(0.23031491, 0.23031494, 0.23031494, 1)
+texture_repeat = 2
+texture = ExtResource("1_jnfyd")
+region_enabled = true
+region_rect = Rect2(1000, 1000, 100000, 100000)
+
+[node name="CharacterBody2D" parent="." instance=ExtResource("2_dx4wb")]
+
+[node name="MainCamera" type="Camera2D" parent="."]
+zoom = Vector2(0.2, 0.2)
+script = SubResource("GDScript_u3sec")
+
+[node name="GUI" type="CanvasLayer" parent="."]
+script = ExtResource("3_1c5ew")
+
+[node name="ProjectileCounter" type="Label" parent="GUI"]
+offset_right = 40.0
+offset_bottom = 23.0
+theme_override_font_sizes/font_size = 16
+text = "Current Projectiles"
+
+[node name="FPS" type="Label" parent="GUI"]
+offset_top = 24.0
+offset_right = 145.0
+offset_bottom = 47.0
+theme_override_font_sizes/font_size = 16
+text = "FPS"
+
+[node name="ProjectileManager" type="Node2D" parent="."]
+modulate = Color(1, 0, 0, 1)
+script = ExtResource("4_dx4wb")
+max_projectiles = 50000
+projectiles_per_spawn = 100
+
+[node name="RightBorder" type="Marker2D" parent="ProjectileManager"]
+position = Vector2(-3000, 0)
+
+[node name="LeftBorder" type="Marker2D" parent="ProjectileManager"]
+position = Vector2(3000, 0)
+
+[node name="MultiMeshInstance2D" type="MultiMeshInstance2D" parent="ProjectileManager"]
+multimesh = SubResource("MultiMesh_cjlmg")
+texture = ExtResource("5_1c5ew")

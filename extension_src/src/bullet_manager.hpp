@@ -14,7 +14,10 @@ protected:
 public:
     BulletManager();
     ~BulletManager();
+
+    void _ready() override;
 };
+
 
 }
 

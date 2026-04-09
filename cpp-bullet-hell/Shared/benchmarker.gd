@@ -4,6 +4,9 @@ extends Node2D
 
 var GD_ONLY_CSV = "res://Benchmarks/gd_only.txt"
 var OBJECT_POOLING = "res://Benchmarks/object_pooling.txt"
+var OBJECT_POOLING_MULTIMESH = "res://Benchmarks/object_pooling_multimesh2d.txt"
+var CPP_MULTIMESH2D = "res://Benchmarks/cpp_multimesh2d.txt"
+
 
 @onready var bench_file = FileAccess.open(OBJECT_POOLING, FileAccess.WRITE)
 

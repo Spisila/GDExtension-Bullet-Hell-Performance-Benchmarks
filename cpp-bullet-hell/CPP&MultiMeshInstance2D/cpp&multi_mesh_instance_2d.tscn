@@ -1,0 +1,52 @@
+[gd_scene load_steps=6 format=3 uid="uid://dkw7hpqfapvpk"]
+
+[ext_resource type="Texture2D" uid="uid://bg2j7u7fkil0k" path="res://icon.svg" id="1_tfgcf"]
+[ext_resource type="PackedScene" uid="uid://unuoaaf04wrp" path="res://Shared/Player.tscn" id="2_hc68l"]
+[ext_resource type="Script" uid="uid://d1ayusltawd28" path="res://GDScriptOnlyAssets/gd_only_gui.gd" id="3_7kq1a"]
+[ext_resource type="Texture2D" uid="uid://b5b60taaxpjnd" path="res://Shared/white circle 100 radius.png" id="4_hc68l"]
+
+[sub_resource type="MultiMesh" id="MultiMesh_7kq1a"]
+
+[node name="CPP&MultiMeshInstance2D" type="Node2D"]
+
+[node name="Floor" type="Sprite2D" parent="."]
+modulate = Color(0.23031491, 0.23031494, 0.23031494, 1)
+texture_repeat = 2
+texture = ExtResource("1_tfgcf")
+region_enabled = true
+region_rect = Rect2(1000, 1000, 100000, 100000)
+
+[node name="CharacterBody2D" parent="." instance=ExtResource("2_hc68l")]
+
+[node name="MainCamera" type="Camera2D" parent="."]
+zoom = Vector2(0.2, 0.2)
+
+[node name="GUI" type="CanvasLayer" parent="."]
+script = ExtResource("3_7kq1a")
+
+[node name="ProjectileCounter" type="Label" parent="GUI"]
+offset_right = 40.0
+offset_bottom = 23.0
+theme_override_font_sizes/font_size = 16
+text = "Current Projectiles"
+
+[node name="FPS" type="Label" parent="GUI"]
+offset_top = 24.0
+offset_right = 145.0
+offset_bottom = 47.0
+theme_override_font_sizes/font_size = 16
+text = "FPS"
+
+[node name="BulletManager" type="BulletManager" parent="."]
+
+[node name="MultiMeshInstance2D" type="MultiMeshInstance2D" parent="BulletManager"]
+position = Vector2(0, -2063.9998)
+scale = Vector2(0.2, 0.2)
+multimesh = SubResource("MultiMesh_7kq1a")
+texture = ExtResource("4_hc68l")
+
+[node name="LeftBorder" type="Marker2D" parent="BulletManager"]
+position = Vector2(3000, -2022)
+
+[node name="RightBorder" type="Marker2D" parent="BulletManager"]
+position = Vector2(-3000, -2022)

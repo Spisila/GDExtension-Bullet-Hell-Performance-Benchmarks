@@ -10,7 +10,7 @@ var timeout_timers : PackedFloat32Array
 @export var max_projectiles : int = 30000
 
 var projectile_speed : float = 10
-var projectile_radius : float = 20
+var projectile_radius : float = 50
 
 var projectiles_per_spawn : int = 50
 
@@ -63,6 +63,7 @@ func check_collisions() :
 	for i in active_projectiles_indexes :
 		if projectiles[i].global_position.distance_to(Globals.player.global_position) < projectile_radius :
 			Globals.player.health_component.take_damage(10)
+			deactivate_projectile(i)
 
 func update_positions() :
 	
