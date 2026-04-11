@@ -8,7 +8,7 @@ var OBJECT_POOLING_MULTIMESH = "res://Benchmarks/object_pooling_multimesh2d.txt"
 var CPP_MULTIMESH2D = "res://Benchmarks/cpp_multimesh2d.txt"
 
 
-@onready var bench_file = FileAccess.open(OBJECT_POOLING, FileAccess.WRITE)
+@onready var bench_file = FileAccess.open(CPP_MULTIMESH2D, FileAccess.WRITE)
 
 func _on_warm_up_timer_timeout() -> void:
 	take_benchmark.start()

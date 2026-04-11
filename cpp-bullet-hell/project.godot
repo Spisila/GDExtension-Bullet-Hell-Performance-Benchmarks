@@ -11,7 +11,7 @@ config_version=5
 [application]
 
 config/name="CPP Bullet Hell"
-run/main_scene="uid://b3c1ltwh1oks3"
+run/main_scene="uid://dkw7hpqfapvpk"
 config/features=PackedStringArray("4.5", "Forward Plus")
 config/icon="res://icon.svg"
 

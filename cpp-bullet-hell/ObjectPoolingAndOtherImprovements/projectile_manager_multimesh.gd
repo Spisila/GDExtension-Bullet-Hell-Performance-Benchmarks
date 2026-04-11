@@ -82,9 +82,6 @@ func count_down_timer(index : int, delta : float) :
 
 func check_collision(index : int) :
 	var distance_from_player : float = instances_positions[index].distance_to(Globals.player.global_position)
-	#print(distance_from_player)
-	#print(instances_positions[index])
-	#print(Globals.player.global_position)
 	if distance_from_player <= projectile_radius :
 		Globals.player.health_component.take_damage(10)
 		deactivate_projectile(index)

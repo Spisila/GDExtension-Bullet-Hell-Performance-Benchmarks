@@ -38,5 +38,7 @@ shape = SubResource("CircleShape2D_qrq4t")
 [node name="DestroyTimer" type="Timer" parent="."]
 wait_time = 7.0
 
+[node name="BulletManager" type="BulletManager" parent="."]
+
 [connection signal="body_entered" from="." to="." method="_on_body_entered"]
 [connection signal="timeout" from="DestroyTimer" to="." method="_on_destroy_timer_timeout"]
