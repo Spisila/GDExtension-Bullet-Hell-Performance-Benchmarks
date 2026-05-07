@@ -1,9 +1,9 @@
-# Godot-specific
+
 .godot/
 *.import
 export_presets.cfg
 
-# Build Artifacts (The "Junk")
+
 extension_src/godot-cpp/gen/
 **/*.obj
 **/*.os
@@ -13,12 +13,12 @@ extension_src/godot-cpp/gen/
 **/*.exp
 .sconsign.dblite
 
-# Compiled Binaries (Optional - see note below)
 cpp-bullet-hell/bin/*.dll
 cpp-bullet-hell/bin/*.so
 cpp-bullet-hell/bin/*.dylib
 
-# IDE/Local
 .vscode/
 .venv/
 .DS_Store
+
+build/

@@ -23,24 +23,26 @@ constexpr int projectiles_per_spawn = 150;
 constexpr float max_left_pos = -3000;
 constexpr float max_right_pos = 3000;
 
-
 constexpr float projectile_speed = 500;
 constexpr float projectile_radius = 50;
-constexpr float projectile_timeout_time = 20;
+constexpr float projectile_timeout_time = 50;
 
-struct projectile 
+constexpr float check_collision_box_size = 100;
+
+struct projectile
 {
-  bool active = false;
-  float timer = projectile_timeout_time;
-  godot::Vector2 position = godot::Vector2(9000,9000);
+    bool active = false;
+    float timer = projectile_timeout_time;
+    godot::Vector2 position = godot::Vector2(9000, 9000);
 };
 
-//std::span<projectile> projectiles_span(projectiles);
+// std::span<projectile> projectiles_span(projectiles);
 
+namespace godot
+{
 
-namespace godot {
-
-    class BulletManager : public Node2D {
+    class BulletManager : public Node2D
+    {
         GDCLASS(BulletManager, Node2D)
 
     protected:
@@ -50,11 +52,11 @@ namespace godot {
         BulletManager();
         ~BulletManager();
 
-        Node* Globals;
-        
-        CharacterBody2D* player;
+        Node *Globals;
 
-        RandomNumberGenerator* rng = nullptr;
+        CharacterBody2D *player;
+
+        RandomNumberGenerator *rng = nullptr;
 
         Ref<MultiMesh> multi;
 
@@ -66,9 +68,7 @@ namespace godot {
 
         void _ready() override;
         void _process(double delta) override;
-
-};
-
+    };
 
 }
 
