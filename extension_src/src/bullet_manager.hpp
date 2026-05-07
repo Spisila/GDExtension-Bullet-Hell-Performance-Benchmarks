@@ -68,6 +68,8 @@ namespace godot
 
         void _ready() override;
         void _process(double delta) override;
+
+        void deactive_projectile(int i, std::vector<projectile>&pjs, float* buffer, unsigned int &current_projectiles, int &active_count);
     };
 
 }

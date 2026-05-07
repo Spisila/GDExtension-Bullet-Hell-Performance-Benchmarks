@@ -11,7 +11,13 @@ void BulletManager::_bind_methods() {}
 
 BulletManager::BulletManager() {}
 
-BulletManager::~BulletManager() {}
+BulletManager::~BulletManager() 
+{
+  if (rng) 
+  {
+    memdelete(rng);
+  }
+}
 
 void BulletManager::_ready()
 {
@@ -96,6 +102,8 @@ void BulletManager::_ready()
 
   Vector2 tex_size = Vector2(20, 20);
   quad->set_size(tex_size);
+
+  rng->randomize();
 }
 
 void BulletManager::_process(double delta)
@@ -118,7 +126,6 @@ void BulletManager::_process(double delta)
         projectile &projectile_i = projectiles[projectile_id];
         Transform2D &transform_i = transforms[projectile_id];
 
-        rng->randomize();
         float random_x = rng->randf_range(max_left_pos, max_right_pos);
 
         projectile_i.position = Vector2(random_x, -2000);
@@ -142,26 +149,25 @@ void BulletManager::_process(double delta)
     PackedFloat32Array bf = multi->get_buffer();
 
     float *bf_ptr = bf.ptrw();
+    
+    Vector2 player_pos = player->get_global_position();
 
-    for (int i = 0; i < max_projectiles; i++)
+    for (int i = 0; i < active_count; i++)
     {
       projectile &projectile_i = projectiles[i];
 
       if (projectile_i.active == true)
       {
-        bf[(i * 8) + 7] += projectile_speed * delta;
+        bf_ptr[(i * 8) + 7] += projectile_speed * delta;
 
         projectile_i.timer -= delta;
 
         if (projectile_i.timer <= 0)
         {
-          projectile_i.active = false;
-          bf[(i * 8) + 7] = 9000;
-          current_projectiles -= 1;
+          deactive_projectile(i, projectiles, bf_ptr, current_projectiles, active_count);
         }
 
-        Vector2 player_pos = player->get_global_position();
-        Vector2 p_i_pos = Vector2(projectile_i.position.x, bf[(i * 8) + 7]);
+        Vector2 p_i_pos = Vector2(projectile_i.position.x, bf_ptr[(i * 8) + 7]);
 
         Vector2 cbox_upleft_corner = Vector2(player_pos.x - check_collision_box_size, player_pos.y - check_collision_box_size);
         Vector2 cbox_downright_corner = Vector2(player_pos.x + check_collision_box_size, player_pos.y + check_collision_box_size);
@@ -169,20 +175,19 @@ void BulletManager::_process(double delta)
         bool inside_box_x = p_i_pos.x > cbox_upleft_corner.x && p_i_pos.x < cbox_downright_corner.x;
         bool inside_box_y = p_i_pos.y > cbox_upleft_corner.y && p_i_pos.y < cbox_downright_corner.y;
 
-        if (inside_box_x && inside_box_y) 
+        if (inside_box_x && inside_box_y)
         {
 
-          float distance = std::pow((player_pos.x - p_i_pos.x), 2) + std::pow((player_pos.y - p_i_pos.y), 2);
+          float distance = (player_pos.x - p_i_pos.x) * (player_pos.x - p_i_pos.x) + 
+                           (player_pos.y - p_i_pos.y) * (player_pos.y - p_i_pos.y);
 
           if (distance <= 7500)
           {
-            projectile_i.active = false;
-            bf[(i * 8) + 7] = 9000;
-            current_projectiles -= 1;
+
+            deactive_projectile(i, projectiles, bf_ptr, current_projectiles, active_count);
+
           }
-
         }
-
       }
     }
 
@@ -191,4 +196,15 @@ void BulletManager::_process(double delta)
   }
 
   Globals->set("current_projectiles", current_projectiles);
+}
+
+void BulletManager::deactive_projectile(int i, std::vector<projectile>&pjs, float* buffer, unsigned int &current_projectiles, int &active_count)
+{
+
+  projectile &projectile_i = pjs[i];
+
+  projectile_i.active = false;
+  buffer[(i * 8) + 7] = 9000;
+  current_projectiles -= 1;
+  active_count -= 1;
 }
