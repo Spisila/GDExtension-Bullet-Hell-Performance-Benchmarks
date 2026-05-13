@@ -16,14 +16,10 @@
 #include <godot_cpp/classes/character_body2d.hpp>
 #include <godot_cpp/classes/engine.hpp>
 
-constexpr unsigned int max_projectiles = 500000;
+constexpr unsigned int max_projectiles = 250000;
 
-constexpr int projectiles_per_spawn = 150;
+constexpr int projectiles_per_spawn = 350;
 
-constexpr float max_left_pos = -3000;
-constexpr float max_right_pos = 3000;
-
-constexpr float projectile_speed = 500;
 constexpr float projectile_radius = 50;
 constexpr float projectile_timeout_time = 50;
 
@@ -31,12 +27,9 @@ constexpr float check_collision_box_size = 100;
 
 struct projectile
 {
-    bool active = false;
-    float timer = projectile_timeout_time;
     godot::Vector2 position = godot::Vector2(9000, 9000);
+    bool active = false;
 };
-
-// std::span<projectile> projectiles_span(projectiles);
 
 namespace godot
 {
@@ -55,6 +48,7 @@ namespace godot
         Node *Globals;
 
         CharacterBody2D *player;
+        Camera2D *camera;
 
         RandomNumberGenerator *rng = nullptr;
 
@@ -63,13 +57,33 @@ namespace godot
         std::vector<projectile> projectiles;
         std::vector<Transform2D> transforms;
 
+        std::vector<int> available;
+        std::vector<int> active;
+
+        float projectile_speed = 500;
+        int increase_speed_counter = 0;
+
         int projectile_id = 0;
         int active_count = 0;
+
+        int OFFSET_X = 3;
+        int OFFSET_Y = 7;
+
+        float max_left_pos = 0;
+        float max_right_pos = 0;
+        float max_up_pos = 0;
+        float max_down_pos = 0;
+
+        float pathfinder_x = 0;
+        float pathfinder_y = 0;
+        float pathfinder_radius = 55000;
+        float pathdinder_speed = 25;
+        int pathfinder_direction = 0;
 
         void _ready() override;
         void _process(double delta) override;
 
-        void deactive_projectile(int i, std::vector<projectile>&pjs, float* buffer, unsigned int &current_projectiles, int &active_count);
+        void deactive_projectile(int i, std::vector<projectile> &pjs, float *buffer, unsigned int &current_projectiles, int &active_count);
     };
 
 }

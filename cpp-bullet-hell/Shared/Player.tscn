@@ -20,7 +20,7 @@ shape = SubResource("CircleShape2D_yobno")
 
 [node name="InputMovement" type="Node2D" parent="."]
 script = ExtResource("2_okw7t")
-movement_speed = 550.0
+movement_speed = 1500.0
 
 [node name="HealthComponent" type="Node2D" parent="."]
 script = ExtResource("3_okw7t")

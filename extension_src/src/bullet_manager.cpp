@@ -11,9 +11,9 @@ void BulletManager::_bind_methods() {}
 
 BulletManager::BulletManager() {}
 
-BulletManager::~BulletManager() 
+BulletManager::~BulletManager()
 {
-  if (rng) 
+  if (rng)
   {
     memdelete(rng);
   }
@@ -22,12 +22,9 @@ BulletManager::~BulletManager()
 void BulletManager::_ready()
 {
   if (Engine::get_singleton()->is_editor_hint())
+  {
     return;
-
-  rng = memnew(RandomNumberGenerator);
-
-  projectiles.resize(max_projectiles);
-  transforms.resize(max_projectiles);
+  }
 
   Node *MMI2D_Node = get_child(0);
 
@@ -62,7 +59,6 @@ void BulletManager::_ready()
   }
 
   Variant player_node = Globals->get("player");
-
   player = Object::cast_to<CharacterBody2D>(player_node);
 
   if (player == nullptr)
@@ -71,9 +67,6 @@ void BulletManager::_ready()
     return;
   }
 
-  multi->set_instance_count(max_projectiles);
-  multi->set_visible_instance_count(active_count);
-  print_line("Set instance count");
   Ref<Mesh> multi_mesh = multi->get_mesh();
 
   if (multi_mesh.is_null())
@@ -90,8 +83,6 @@ void BulletManager::_ready()
     return;
   }
 
-  print_line(quad->get_class());
-
   Ref<Texture2D> tex = MMI2D->get_texture();
 
   if (tex.is_null())
@@ -100,17 +91,47 @@ void BulletManager::_ready()
     return;
   }
 
+  max_left_pos = Globals->get("max_left");
+  max_right_pos = Globals->get("max_right");
+  max_up_pos = Globals->get("max_up");
+  max_down_pos = Globals->get("max_down");
+
+  projectiles.resize(max_projectiles);
+  transforms.resize(max_projectiles);
+  
+  multi->set_instance_count(max_projectiles);
+  
   Vector2 tex_size = Vector2(20, 20);
   quad->set_size(tex_size);
-
+  
+  rng = memnew(RandomNumberGenerator);
   rng->randomize();
+  
+  pathfinder_direction = rng->randi_range(-1, 1);
+  pathfinder_y = max_up_pos;
 }
 
 void BulletManager::_process(double delta)
 {
 
   if (Engine::get_singleton()->is_editor_hint())
+  {
     return;
+  }
+
+  if (rng->randi_range(0, 100) <= 10)
+  {
+    pathfinder_direction = -pathfinder_direction;
+  }
+
+  increase_speed_counter++;
+  if (increase_speed_counter >= 100) 
+  {
+    projectile_speed += 50;
+    increase_speed_counter = 0;
+  } 
+
+  pathfinder_x = std::clamp(pathfinder_x + (pathfinder_direction * pathdinder_speed), max_left_pos, max_right_pos);
 
   bool spawning = Globals->get("spawning");
   unsigned int current_projectiles = Globals->get("current_projectiles");
@@ -120,6 +141,7 @@ void BulletManager::_process(double delta)
 
     if (current_projectiles < max_projectiles)
     {
+
       for (int i = 0; i < projectiles_per_spawn; i++)
       {
 
@@ -128,10 +150,10 @@ void BulletManager::_process(double delta)
 
         float random_x = rng->randf_range(max_left_pos, max_right_pos);
 
-        projectile_i.position = Vector2(random_x, -2000);
+        projectile_i.position = Vector2(random_x, max_up_pos);
         projectile_i.active = true;
 
-        transform_i.set_origin(Vector2(random_x, -2000));
+        transform_i.set_origin(Vector2(random_x, max_up_pos));
 
         multi->set_instance_transform_2d(projectile_id, transform_i);
 
@@ -147,64 +169,74 @@ void BulletManager::_process(double delta)
   {
 
     PackedFloat32Array bf = multi->get_buffer();
-
     float *bf_ptr = bf.ptrw();
-    
+
     Vector2 player_pos = player->get_global_position();
 
-    for (int i = 0; i < active_count; i++)
+    float cbox_up = player_pos.y - check_collision_box_size;
+    float cbox_left = player_pos.x - check_collision_box_size;
+    float cbox_down = player_pos.y + check_collision_box_size;
+    float cbox_right = player_pos.x + check_collision_box_size;
+
+    for (int i = 0; i < max_projectiles; i++)
     {
       projectile &projectile_i = projectiles[i];
 
       if (projectile_i.active == true)
       {
-        bf_ptr[(i * 8) + 7] += projectile_speed * delta;
+        // Update Position
+        bf_ptr[(i * 8) + OFFSET_Y] += projectile_speed * delta;
 
-        projectile_i.timer -= delta;
+        Vector2 p_i_pos = Vector2(projectile_i.position.x, bf_ptr[(i * 8) + 7]);
+        // Check pathfinder collision
 
-        if (projectile_i.timer <= 0)
+        float pathfidner_distace = (pathfinder_x - p_i_pos.x) * (pathfinder_x - p_i_pos.x) +
+                                   (pathfinder_y - p_i_pos.y) * (pathfinder_y - p_i_pos.y);
+
+        if (pathfidner_distace <= pathfinder_radius)
         {
           deactive_projectile(i, projectiles, bf_ptr, current_projectiles, active_count);
         }
 
-        Vector2 p_i_pos = Vector2(projectile_i.position.x, bf_ptr[(i * 8) + 7]);
+        // Check collision player
 
-        Vector2 cbox_upleft_corner = Vector2(player_pos.x - check_collision_box_size, player_pos.y - check_collision_box_size);
-        Vector2 cbox_downright_corner = Vector2(player_pos.x + check_collision_box_size, player_pos.y + check_collision_box_size);
-
-        bool inside_box_x = p_i_pos.x > cbox_upleft_corner.x && p_i_pos.x < cbox_downright_corner.x;
-        bool inside_box_y = p_i_pos.y > cbox_upleft_corner.y && p_i_pos.y < cbox_downright_corner.y;
+        bool inside_box_x = p_i_pos.x > cbox_left && p_i_pos.x < cbox_right;
+        bool inside_box_y = p_i_pos.y > cbox_up && p_i_pos.y < cbox_down;
 
         if (inside_box_x && inside_box_y)
         {
 
-          float distance = (player_pos.x - p_i_pos.x) * (player_pos.x - p_i_pos.x) + 
+          float distance = (player_pos.x - p_i_pos.x) * (player_pos.x - p_i_pos.x) +
                            (player_pos.y - p_i_pos.y) * (player_pos.y - p_i_pos.y);
 
           if (distance <= 7500)
           {
 
             deactive_projectile(i, projectiles, bf_ptr, current_projectiles, active_count);
-
           }
+        }
+
+        // Check if outside screen
+        if (p_i_pos.y > max_down_pos)
+        {
+          deactive_projectile(i, projectiles, bf_ptr, current_projectiles, active_count);
         }
       }
     }
 
-    multi->set_visible_instance_count(active_count);
     multi->set_buffer(bf);
   }
 
   Globals->set("current_projectiles", current_projectiles);
 }
 
-void BulletManager::deactive_projectile(int i, std::vector<projectile>&pjs, float* buffer, unsigned int &current_projectiles, int &active_count)
+void BulletManager::deactive_projectile(int i, std::vector<projectile> &pjs, float *buffer, unsigned int &current_projectiles, int &active_count)
 {
 
   projectile &projectile_i = pjs[i];
 
   projectile_i.active = false;
-  buffer[(i * 8) + 7] = 9000;
+  buffer[(i * 8) + OFFSET_Y] = 9000;
   current_projectiles -= 1;
   active_count -= 1;
 }

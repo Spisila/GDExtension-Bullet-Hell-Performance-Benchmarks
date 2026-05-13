@@ -1,6 +1,7 @@
-[gd_scene load_steps=7 format=3 uid="uid://dkw7hpqfapvpk"]
+[gd_scene load_steps=8 format=3 uid="uid://dkw7hpqfapvpk"]
 
 [ext_resource type="Texture2D" uid="uid://bg2j7u7fkil0k" path="res://icon.svg" id="1_tfgcf"]
+[ext_resource type="Script" uid="uid://dqyo017n8ry43" path="res://CPP&MultiMeshInstance2D/main_camera.gd" id="2_7kq1a"]
 [ext_resource type="PackedScene" uid="uid://unuoaaf04wrp" path="res://Shared/Player.tscn" id="2_hc68l"]
 [ext_resource type="Script" uid="uid://d1ayusltawd28" path="res://GDScriptOnlyAssets/gd_only_gui.gd" id="3_7kq1a"]
 [ext_resource type="Texture2D" uid="uid://b5b60taaxpjnd" path="res://Shared/white circle 100 radius.png" id="4_hc68l"]
@@ -21,10 +22,12 @@ texture = ExtResource("1_tfgcf")
 region_enabled = true
 region_rect = Rect2(1000, 1000, 100000, 100000)
 
-[node name="CharacterBody2D" parent="." instance=ExtResource("2_hc68l")]
-
 [node name="MainCamera" type="Camera2D" parent="."]
 zoom = Vector2(0.2, 0.2)
+limit_enabled = false
+script = ExtResource("2_7kq1a")
+
+[node name="CharacterBody2D" parent="." instance=ExtResource("2_hc68l")]
 
 [node name="GUI" type="CanvasLayer" parent="."]
 script = ExtResource("3_7kq1a")
@@ -49,8 +52,15 @@ modulate = Color(1, 0, 0, 1)
 multimesh = SubResource("MultiMesh_7kq1a")
 texture = ExtResource("4_hc68l")
 
-[node name="LeftBorder" type="Marker2D" parent="BulletManager"]
-position = Vector2(3000, -2022)
+[node name="LeftBorder" type="Node2D" parent="BulletManager"]
+position = Vector2(2892, -1661)
 
-[node name="RightBorder" type="Marker2D" parent="BulletManager"]
-position = Vector2(-3000, -2022)
+[node name="RightBorder" type="Node2D" parent="BulletManager"]
+position = Vector2(-2921, -1664)
+
+[node name="LowerBorder" type="Node2D" parent="BulletManager"]
+position = Vector2(0, 1648)
+
+[node name="WhiteCircle100Radius" type="Sprite2D" parent="."]
+position = Vector2(-2866, -1604)
+texture = ExtResource("4_hc68l")
