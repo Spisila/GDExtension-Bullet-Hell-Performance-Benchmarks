@@ -1,4 +1,3 @@
-// #include <span>
 #include <random>
 #include <cmath>
 #include <vector>
@@ -98,15 +97,15 @@ void BulletManager::_ready()
 
   projectiles.resize(max_projectiles);
   transforms.resize(max_projectiles);
-  
+
   multi->set_instance_count(max_projectiles);
-  
+
   Vector2 tex_size = Vector2(20, 20);
   quad->set_size(tex_size);
-  
+
   rng = memnew(RandomNumberGenerator);
   rng->randomize();
-  
+
   pathfinder_direction = rng->randi_range(-1, 1);
   pathfinder_y = max_up_pos;
 }
@@ -119,17 +118,47 @@ void BulletManager::_process(double delta)
     return;
   }
 
-  if (rng->randi_range(0, 100) <= 10)
+  if (pathfinder_change_dir_timer >= pathfinder_change_dir_time)
   {
-    pathfinder_direction = -pathfinder_direction;
+
+    int dir = rng->randi_range(0, 2);
+
+    if (dir == 0)
+    {
+      pathfinder_direction = 0;
+    }
+    else if (dir == 1 || dir == 2)
+    {
+      float chance_to_turn = ((pathfinder_x - max_left_pos) / (max_right_pos - max_left_pos)) * 100;
+
+      if (rng->randi_range(0, 100) <= chance_to_turn)
+      {
+        // Turn left
+        pathfinder_direction = -1;
+      }
+      else
+      {
+        // Turn Right
+        pathfinder_direction = 1;
+      }
+
+    }
+
+    pathfinder_change_dir_timer = 0;
+
+    pathfinder_change_dir_time = rng->randf_range(12, 35);
   }
 
-  increase_speed_counter++;
-  if (increase_speed_counter >= 100) 
-  {
-    projectile_speed += 50;
-    increase_speed_counter = 0;
-  } 
+  pathfinder_change_dir_timer++;
+
+  // Increase projectiles speed
+  // increase_speed_counter++;
+  // if (increase_speed_counter >= 100)
+  // {
+  //   projectile_speed += 50;
+  //   projectiles_per_spawn += 20;
+  //   increase_speed_counter = 0;
+  // }
 
   pathfinder_x = std::clamp(pathfinder_x + (pathfinder_direction * pathdinder_speed), max_left_pos, max_right_pos);
 
@@ -209,7 +238,7 @@ void BulletManager::_process(double delta)
           float distance = (player_pos.x - p_i_pos.x) * (player_pos.x - p_i_pos.x) +
                            (player_pos.y - p_i_pos.y) * (player_pos.y - p_i_pos.y);
 
-          if (distance <= 7500)
+          if (distance <= 17500)
           {
 
             deactive_projectile(i, projectiles, bf_ptr, current_projectiles, active_count);
