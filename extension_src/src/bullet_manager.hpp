@@ -16,7 +16,7 @@
 #include <godot_cpp/classes/character_body2d.hpp>
 #include <godot_cpp/classes/engine.hpp>
 
-constexpr unsigned int max_projectiles = 300000;
+constexpr unsigned int max_projectiles = 250000;
 
 constexpr float projectile_radius = 50;
 

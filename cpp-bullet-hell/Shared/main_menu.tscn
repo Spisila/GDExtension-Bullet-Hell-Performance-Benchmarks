@@ -1,0 +1,37 @@
+[gd_scene load_steps=3 format=3 uid="uid://wpsid8o21k8k"]
+
+[ext_resource type="Script" uid="uid://1p60q5lxkoff" path="res://Shared/main_menu.gd" id="1_7rbhj"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_1bv32"]
+bg_color = Color(0.05367841, 0.04753521, 0.15191177, 1)
+
+[node name="MainMenu" type="PanelContainer"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_1bv32")
+script = ExtResource("1_7rbhj")
+
+[node name="CenterContainer" type="CenterContainer" parent="."]
+layout_mode = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CenterContainer"]
+custom_minimum_size = Vector2(350, 0)
+layout_mode = 2
+
+[node name="LineEdit" type="LineEdit" parent="CenterContainer/VBoxContainer"]
+layout_mode = 2
+placeholder_text = "Iniciais"
+
+[node name="Start" type="Button" parent="CenterContainer/VBoxContainer"]
+layout_mode = 2
+text = "START"
+
+[node name="Quit" type="Button" parent="CenterContainer/VBoxContainer"]
+layout_mode = 2
+text = "QUIT"
+
+[connection signal="pressed" from="CenterContainer/VBoxContainer/Start" to="." method="_on_start_pressed"]
+[connection signal="pressed" from="CenterContainer/VBoxContainer/Quit" to="." method="_on_quit_pressed"]

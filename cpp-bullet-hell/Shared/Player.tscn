@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=3 uid="uid://unuoaaf04wrp"]
+[gd_scene load_steps=11 format=3 uid="uid://unuoaaf04wrp"]
 
 [ext_resource type="Script" uid="uid://dh7nnkrbnqq7c" path="res://Shared/Player.gd" id="1_i261i"]
 [ext_resource type="Texture2D" uid="uid://bnsag3hf4o3hk" path="res://Shared/ship.png" id="2_jata2"]
@@ -6,6 +6,7 @@
 [ext_resource type="Script" uid="uid://cw5bedu3t4dkc" path="res://Shared/health_component.gd" id="3_okw7t"]
 [ext_resource type="Texture2D" uid="uid://b5b60taaxpjnd" path="res://Shared/white circle 100 radius.png" id="5_fu4bq"]
 [ext_resource type="Texture2D" uid="uid://bo7fdkv7w1qmy" path="res://Shared/white circle hollow 100 radius .png" id="6_bslyo"]
+[ext_resource type="PackedScene" uid="uid://d14gtmmc7bwav" path="res://Shared/ship_explosion_vfx.tscn" id="7_tjjas"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_yobno"]
 radius = 73.00685
@@ -80,8 +81,12 @@ scale_amount_max = 0.3
 scale_amount_curve = SubResource("Curve_bslyo")
 color_ramp = SubResource("Gradient_bslyo")
 
-[node name="Sprite2D" type="Sprite2D" parent="VFX"]
+[node name="Shield" type="Sprite2D" parent="VFX"]
 texture_filter = 1
 position = Vector2(0, 19)
 scale = Vector2(1.5, 1.5)
 texture = ExtResource("6_bslyo")
+
+[node name="ShipExplosionVFX" parent="VFX" instance=ExtResource("7_tjjas")]
+
+[connection signal="died" from="HealthComponent" to="." method="_on_health_component_died"]
