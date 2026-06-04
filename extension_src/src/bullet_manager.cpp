@@ -6,7 +6,12 @@
 
 using namespace godot;
 
-void BulletManager::_bind_methods() {}
+void BulletManager::_bind_methods()
+{
+
+  ADD_SIGNAL(MethodInfo("player_hit"));
+  ADD_SIGNAL(MethodInfo("difficulty_up"));
+}
 
 BulletManager::BulletManager() {}
 
@@ -95,6 +100,14 @@ void BulletManager::_ready()
   max_up_pos = Globals->get("max_up");
   max_down_pos = Globals->get("max_down");
 
+  projectile_speed = Globals->get("initial_projectile_speed");
+  projectile_speed_increase = Globals->get("projectile_speed_increase");
+
+  current_pathfinder_radius = pathfinder_radius;
+
+  print_line(projectile_speed);
+  print_line(projectile_speed_increase);
+
   projectiles.resize(max_projectiles);
   transforms.resize(max_projectiles);
 
@@ -126,11 +139,13 @@ void BulletManager::_process(double delta)
     if (dir == 0)
     {
       pathfinder_direction = 0;
+      current_pathfinder_radius = pathfinder_radius;
     }
     else if (dir == 1 || dir == 2)
     {
       float chance_to_turn = ((pathfinder_x - max_left_pos) / (max_right_pos - max_left_pos)) * 100;
 
+      current_pathfinder_radius = pathfinder_radius_diagonal;
       if (rng->randi_range(0, 100) <= chance_to_turn)
       {
         // Turn left
@@ -141,7 +156,6 @@ void BulletManager::_process(double delta)
         // Turn Right
         pathfinder_direction = 1;
       }
-
     }
 
     pathfinder_change_dir_timer = 0;
@@ -151,14 +165,21 @@ void BulletManager::_process(double delta)
 
   pathfinder_change_dir_timer++;
 
-  // Increase projectiles speed
-  // increase_speed_counter++;
-  // if (increase_speed_counter >= 100)
-  // {
-  //   projectile_speed += 50;
-  //   projectiles_per_spawn += 20;
-  //   increase_speed_counter = 0;
-  // }
+  increase_speed_counter += delta;
+  if (increase_speed_counter >= 5)
+  {
+    projectile_speed += projectile_speed_increase;
+    projectiles_per_spawn += 70;
+    increase_speed_counter = 0;
+    pathdinder_speed += 2;
+
+    if (pathfinder_change_dir_time > 30)
+    {
+      pathfinder_change_dir_time -= 5;
+    }
+
+    emit_signal("difficulty_up");
+  }
 
   pathfinder_x = std::clamp(pathfinder_x + (pathfinder_direction * pathdinder_speed), max_left_pos, max_right_pos);
 
@@ -168,29 +189,36 @@ void BulletManager::_process(double delta)
   if (spawning == true)
   {
 
+    spawn_batch_timer += delta;
+
     if (current_projectiles < max_projectiles)
     {
 
-      for (int i = 0; i < projectiles_per_spawn; i++)
+      if (spawn_batch_timer >= spawn_batch_time)
       {
+        for (int i = 0; i < projectiles_per_spawn; i++)
+        {
 
-        projectile &projectile_i = projectiles[projectile_id];
-        Transform2D &transform_i = transforms[projectile_id];
+          projectile &projectile_i = projectiles[projectile_id];
+          Transform2D &transform_i = transforms[projectile_id];
 
-        float random_x = rng->randf_range(max_left_pos, max_right_pos);
+          float random_x = rng->randf_range(max_left_pos, max_right_pos);
 
-        projectile_i.position = Vector2(random_x, max_up_pos);
-        projectile_i.active = true;
+          projectile_i.position = Vector2(random_x, max_up_pos);
+          projectile_i.active = true;
 
-        transform_i.set_origin(Vector2(random_x, max_up_pos));
+          transform_i.set_origin(Vector2(random_x, max_up_pos));
 
-        multi->set_instance_transform_2d(projectile_id, transform_i);
+          multi->set_instance_transform_2d(projectile_id, transform_i);
 
-        projectile_id = (projectile_id + 1) % max_projectiles;
+          projectile_id = (projectile_id + 1) % max_projectiles;
 
-        current_projectiles += 1;
+          current_projectiles += 1;
+        }
+        active_count += projectiles_per_spawn;
+
+        spawn_batch_timer = 0;
       }
-      active_count += projectiles_per_spawn;
     }
   }
 
@@ -222,7 +250,7 @@ void BulletManager::_process(double delta)
         float pathfidner_distace = (pathfinder_x - p_i_pos.x) * (pathfinder_x - p_i_pos.x) +
                                    (pathfinder_y - p_i_pos.y) * (pathfinder_y - p_i_pos.y);
 
-        if (pathfidner_distace <= pathfinder_radius)
+        if (pathfidner_distace <= current_pathfinder_radius)
         {
           deactive_projectile(i, projectiles, bf_ptr, current_projectiles, active_count);
         }
@@ -242,6 +270,7 @@ void BulletManager::_process(double delta)
           {
 
             deactive_projectile(i, projectiles, bf_ptr, current_projectiles, active_count);
+            emit_signal("player_hit");
           }
         }
 

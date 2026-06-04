@@ -16,7 +16,7 @@
 #include <godot_cpp/classes/character_body2d.hpp>
 #include <godot_cpp/classes/engine.hpp>
 
-constexpr unsigned int max_projectiles = 220000;
+constexpr unsigned int max_projectiles = 300000;
 
 constexpr float projectile_radius = 50;
 
@@ -58,22 +58,19 @@ namespace godot
         std::vector<int> active;
 
         float projectile_speed = 850;
+        float projectile_speed_increase = 0;
+
+        double spawn_batch_time = 0.002;
+        double spawn_batch_timer = 0;
         int projectiles_per_spawn = 350;
 
-        int increase_speed_counter = 0;
+        double increase_speed_counter = 0;
 
         int projectile_id = 0;
         int active_count = 0;
 
         int OFFSET_X = 3;
         int OFFSET_Y = 7;
-
-        enum pathfinder_dir
-        {
-            UP = 0,
-            DIAGONAL = 1,
-            LATERAL = 2,
-        };
 
         float max_left_pos = 0;
         float max_right_pos = 0;
@@ -82,11 +79,11 @@ namespace godot
 
         float pathfinder_x = 0;
         float pathfinder_y = 0;
+        float current_pathfinder_radius = 0;
         float pathfinder_radius = 65000;
+        float pathfinder_radius_diagonal = 105000;
         float pathdinder_speed = 25;
         int pathfinder_direction = 0;
-
-        bool pathfinder_move_with_bullets = false;
 
         int pathfinder_change_dir_time = 120;
         int pathfinder_change_dir_timer = 0;

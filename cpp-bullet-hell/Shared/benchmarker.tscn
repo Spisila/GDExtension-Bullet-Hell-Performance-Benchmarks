@@ -6,6 +6,7 @@
 script = ExtResource("1_ig8mk")
 
 [node name="TakeBenchmark" type="Timer" parent="."]
+one_shot = true
 
 [node name="WarmUpTimer" type="Timer" parent="."]
 wait_time = 2.0

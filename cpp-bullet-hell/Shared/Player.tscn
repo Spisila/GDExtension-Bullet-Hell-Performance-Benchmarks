@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=3 uid="uid://unuoaaf04wrp"]
+[gd_scene load_steps=10 format=3 uid="uid://unuoaaf04wrp"]
 
 [ext_resource type="Script" uid="uid://dh7nnkrbnqq7c" path="res://Shared/Player.gd" id="1_i261i"]
 [ext_resource type="Texture2D" uid="uid://bnsag3hf4o3hk" path="res://Shared/ship.png" id="2_jata2"]
@@ -6,8 +6,6 @@
 [ext_resource type="Script" uid="uid://cw5bedu3t4dkc" path="res://Shared/health_component.gd" id="3_okw7t"]
 [ext_resource type="Texture2D" uid="uid://b5b60taaxpjnd" path="res://Shared/white circle 100 radius.png" id="5_fu4bq"]
 [ext_resource type="Texture2D" uid="uid://bo7fdkv7w1qmy" path="res://Shared/white circle hollow 100 radius .png" id="6_bslyo"]
-[ext_resource type="AudioStream" uid="uid://gex21j3pmsm4" path="res://Shared/hitHurt.wav" id="7_warnn"]
-[ext_resource type="Script" uid="uid://ck25ucon3c372" path="res://Shared/play_hurt_sound.gd" id="8_drxcl"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_yobno"]
 radius = 73.00685
@@ -37,7 +35,7 @@ movement_speed = 1500.0
 
 [node name="HealthComponent" type="Node2D" parent="."]
 script = ExtResource("3_okw7t")
-max_health = 100.0
+max_health = 5000.0
 
 [node name="VFX" type="Node2D" parent="."]
 
@@ -87,9 +85,3 @@ texture_filter = 1
 position = Vector2(0, 19)
 scale = Vector2(1.5, 1.5)
 texture = ExtResource("6_bslyo")
-
-[node name="PlayHurtSound" type="AudioStreamPlayer2D" parent="."]
-stream = ExtResource("7_warnn")
-script = ExtResource("8_drxcl")
-
-[connection signal="damaged" from="HealthComponent" to="PlayHurtSound" method="_on_health_component_damaged"]
