@@ -7,7 +7,7 @@ binary_out_path = "../cpp-bullet-hell/bin/"
 
 # 2. Initialize the environment
 env = SConscript(os.path.join(godot_cpp_path, "SConstruct"))
-
+    
 # 3. Define where our source code is
 sources = Glob("src/*.cpp")
 

@@ -1,10 +1,11 @@
-[gd_scene load_steps=14 format=3 uid="uid://dkw7hpqfapvpk"]
+[gd_scene load_steps=17 format=3 uid="uid://dkw7hpqfapvpk"]
 
 [ext_resource type="Script" uid="uid://ch8hycy0k142u" path="res://CPP&MultiMeshInstance2D/cpp&multi_mesh_instance_2d.gd" id="1_pf1cx"]
 [ext_resource type="Script" uid="uid://dqyo017n8ry43" path="res://CPP&MultiMeshInstance2D/main_camera.gd" id="2_7kq1a"]
 [ext_resource type="PackedScene" uid="uid://unuoaaf04wrp" path="res://Shared/Player.tscn" id="2_hc68l"]
 [ext_resource type="Script" uid="uid://d1ayusltawd28" path="res://GDScriptOnlyAssets/gd_only_gui.gd" id="3_7kq1a"]
 [ext_resource type="Texture2D" uid="uid://b5b60taaxpjnd" path="res://Shared/white circle 100 radius.png" id="4_hc68l"]
+[ext_resource type="Script" uid="uid://1svaxvxuimbh" path="res://Shared/shake_ui.gd" id="5_pf1cx"]
 
 [sub_resource type="Animation" id="Animation_pf1cx"]
 length = 0.001
@@ -42,6 +43,21 @@ _data = {
 &"RESET": SubResource("Animation_pf1cx"),
 &"damage": SubResource("Animation_7kq1a")
 }
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_pf1cx"]
+bg_color = Color(0.0455, 0.12669991, 0.35, 1)
+corner_radius_top_left = 5
+corner_radius_top_right = 5
+corner_radius_bottom_right = 5
+corner_radius_bottom_left = 5
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_7kq1a"]
+bg_color = Color(0.38396287, 0.6032325, 0.92320704, 1)
+border_color = Color(0.6962196, 1.0787996, 1.5790963, 1)
+corner_radius_top_left = 5
+corner_radius_top_right = 5
+corner_radius_bottom_right = 5
+corner_radius_bottom_left = 5
 
 [sub_resource type="Animation" id="Animation_71nrg"]
 length = 0.001
@@ -133,17 +149,29 @@ libraries = {
 }
 
 [node name="ProgressBar" type="ProgressBar" parent="GUI"]
-offset_left = 917.0
-offset_top = 1017.0
-offset_right = 1213.0
-offset_bottom = 1044.0
+offset_left = 695.0
+offset_top = 1006.0
+offset_right = 1232.0
+offset_bottom = 1055.0
+theme_override_styles/background = SubResource("StyleBoxFlat_pf1cx")
+theme_override_styles/fill = SubResource("StyleBoxFlat_7kq1a")
 max_value = 5000.0
 step = 1.0
+value = 2500.0
+script = ExtResource("5_pf1cx")
+x_range = Vector2(-25, 25)
+y_range = Vector2(-25, 25)
+
+[node name="BackToOriginalPos" type="Timer" parent="GUI/ProgressBar"]
+wait_time = 0.05
+one_shot = true
 
 [node name="Distance" type="Label" parent="GUI"]
-offset_top = 1018.0
-offset_right = 67.0
-offset_bottom = 1041.0
+offset_left = 15.0
+offset_top = 1012.0
+offset_right = 149.0
+offset_bottom = 1057.0
+theme_override_font_sizes/font_size = 32
 text = "Distance"
 
 [node name="DefeatFadeOut" type="ColorRect" parent="GUI"]
@@ -183,6 +211,8 @@ wait_time = 2.0
 one_shot = true
 autostart = true
 
+[connection signal="timeout" from="GUI/ProgressBar/BackToOriginalPos" to="GUI/ProgressBar" method="_on_back_to_original_pos_timeout"]
 [connection signal="difficulty_up" from="BulletManager" to="CharacterBody2D" method="_on_bullet_manager_difficulty_up"]
+[connection signal="player_hit" from="BulletManager" to="GUI/ProgressBar" method="_on_bullet_manager_player_hit"]
 [connection signal="timeout" from="DefeatTimer" to="CharacterBody2D" method="_on_defeat_timer_timeout"]
 [connection signal="timeout" from="WarmUpTimer" to="." method="_on_warm_up_timer_timeout"]

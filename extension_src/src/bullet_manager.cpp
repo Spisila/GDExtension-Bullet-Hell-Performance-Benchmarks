@@ -181,7 +181,9 @@ void BulletManager::_process(double delta)
     emit_signal("difficulty_up");
   }
 
-  pathfinder_x = std::clamp(pathfinder_x + (pathfinder_direction * pathdinder_speed), max_left_pos, max_right_pos);
+  // pathfinder_x = std::clamp(pathfinder_x + (pathfinder_direction * pathdinder_speed), max_left_pos, max_right_pos);
+
+  pathfinder_x = Math::clamp(pathfinder_x + (pathfinder_direction * pathdinder_speed), max_left_pos, max_right_pos);
 
   bool spawning = Globals->get("spawning");
   unsigned int current_projectiles = Globals->get("current_projectiles");

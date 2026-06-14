@@ -4,8 +4,8 @@ extends PanelContainer
 @onready var current_score: Label = $CenterContainer/VBoxContainer/CurrentScore
 
 func _ready() -> void:
-	high_score.text = "HIGH SCORE : " + str(Globals.high_score)
-	current_score.text = "SCORE : " + str(Globals.distance)
+	high_score.text = str(Globals.high_score)
+	current_score.text = str(Globals.distance)
 	Globals.distance = 0
 
 func _on_restart_button_pressed() -> void:
