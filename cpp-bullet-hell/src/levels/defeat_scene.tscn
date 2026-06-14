@@ -1,7 +1,7 @@
 [gd_scene load_steps=4 format=3 uid="uid://bfvetrxyks718"]
 
-[ext_resource type="Script" uid="uid://c54uf7l4ab8sy" path="res://Shared/defeat_scene.gd" id="1_0y760"]
-[ext_resource type="Theme" uid="uid://bm61k5dt2ikv0" path="res://Shared/Base_Theme.tres" id="2_tvmay"]
+[ext_resource type="Script" uid="uid://c54uf7l4ab8sy" path="res://src/levels/defeat_scene.gd" id="1_r1jk4"]
+[ext_resource type="Theme" uid="uid://bm61k5dt2ikv0" path="res://src/common/UI/Base_Theme.tres" id="2_yqfxv"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_1bv32"]
 bg_color = Color(0.05367841, 0.04753521, 0.15191177, 1)
@@ -13,7 +13,7 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_1bv32")
-script = ExtResource("1_0y760")
+script = ExtResource("1_r1jk4")
 
 [node name="CenterContainer" type="CenterContainer" parent="."]
 layout_mode = 2
@@ -53,7 +53,7 @@ layout_mode = 2
 
 [node name="Buttons" type="HBoxContainer" parent="CenterContainer/VBoxContainer"]
 layout_mode = 2
-theme = ExtResource("2_tvmay")
+theme = ExtResource("2_yqfxv")
 theme_override_constants/separation = 10
 
 [node name="RestartButton" type="Button" parent="CenterContainer/VBoxContainer/Buttons"]

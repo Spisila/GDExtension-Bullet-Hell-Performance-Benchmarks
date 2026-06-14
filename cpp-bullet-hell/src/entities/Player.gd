@@ -59,4 +59,4 @@ func _on_health_component_died() -> void:
 
 
 func _on_defeat_timer_timeout() -> void:
-	get_tree().change_scene_to_file("res://Shared/DefeatScene.tscn")
+	get_tree().change_scene_to_file("res://src/levels/defeat_scene.tscn")

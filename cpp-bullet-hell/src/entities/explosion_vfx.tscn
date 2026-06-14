@@ -1,6 +1,6 @@
 [gd_scene load_steps=4 format=3 uid="uid://drqavgfk5m0je"]
 
-[ext_resource type="Texture2D" uid="uid://cifh2n7lboa0n" path="res://Shared/white square.png" id="1_xboe6"]
+[ext_resource type="Texture2D" uid="uid://cifh2n7lboa0n" path="res://assets/VFX/particles/white square.png" id="1_xboe6"]
 
 [sub_resource type="Curve" id="Curve_k1kp8"]
 _data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(0.63953495, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]

@@ -1,10 +1,10 @@
 [gd_scene load_steps=9 format=3 uid="uid://wpsid8o21k8k"]
 
-[ext_resource type="Script" uid="uid://1p60q5lxkoff" path="res://Shared/main_menu.gd" id="1_7rbhj"]
-[ext_resource type="Theme" uid="uid://bm61k5dt2ikv0" path="res://Shared/Base_Theme.tres" id="2_7fb5d"]
-[ext_resource type="Texture2D" uid="uid://bnsag3hf4o3hk" path="res://Shared/ship.png" id="2_u8hbd"]
-[ext_resource type="Texture2D" uid="uid://b5b60taaxpjnd" path="res://Shared/white circle 100 radius.png" id="3_7fb5d"]
-[ext_resource type="Texture2D" uid="uid://bo7fdkv7w1qmy" path="res://Shared/white circle hollow 100 radius .png" id="4_rnc66"]
+[ext_resource type="Script" uid="uid://1p60q5lxkoff" path="res://src/levels/main_menu.gd" id="1_7rbhj"]
+[ext_resource type="Theme" uid="uid://bm61k5dt2ikv0" path="res://src/common/UI/Base_Theme.tres" id="2_7fb5d"]
+[ext_resource type="Texture2D" uid="uid://bnsag3hf4o3hk" path="res://src/entities/ship.png" id="2_u8hbd"]
+[ext_resource type="Texture2D" uid="uid://b5b60taaxpjnd" path="res://assets/VFX/particles/white circle 100 radius.png" id="3_7fb5d"]
+[ext_resource type="Texture2D" uid="uid://bo7fdkv7w1qmy" path="res://assets/VFX/particles/white circle hollow 100 radius .png" id="4_rnc66"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_1bv32"]
 bg_color = Color(0.05367841, 0.04753521, 0.15191177, 1)

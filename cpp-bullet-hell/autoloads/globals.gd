@@ -4,8 +4,6 @@ var bullet_manager : BulletManager = null
 
 var player : Player = null
 
-var player_name : String = ""
-
 var max_left  : float = 0
 var max_right : float = 0
 var max_up    : float = 0

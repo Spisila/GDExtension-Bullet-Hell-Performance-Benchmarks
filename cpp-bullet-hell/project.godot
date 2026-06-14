@@ -17,8 +17,7 @@ config/icon="res://icon.svg"
 
 [autoload]
 
-Globals="*res://Shared/globals.gd"
-Benchmarker="*res://Shared/benchmarker.tscn"
+Globals="*res://autoloads/globals.gd"
 
 [display]
 

@@ -7,7 +7,6 @@ var original_pos : Vector2
 @export var x_range : Vector2
 @export var y_range : Vector2
 
-# Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	original_pos = self.position
 

@@ -1,12 +1,12 @@
 [gd_scene load_steps=11 format=3 uid="uid://unuoaaf04wrp"]
 
-[ext_resource type="Script" uid="uid://dh7nnkrbnqq7c" path="res://Shared/Player.gd" id="1_i261i"]
-[ext_resource type="Texture2D" uid="uid://bnsag3hf4o3hk" path="res://Shared/ship.png" id="2_jata2"]
-[ext_resource type="Script" uid="uid://d1orpp314734n" path="res://Shared/InputMovement.gd" id="2_okw7t"]
-[ext_resource type="Script" uid="uid://cw5bedu3t4dkc" path="res://Shared/health_component.gd" id="3_okw7t"]
-[ext_resource type="Texture2D" uid="uid://b5b60taaxpjnd" path="res://Shared/white circle 100 radius.png" id="5_fu4bq"]
-[ext_resource type="Texture2D" uid="uid://bo7fdkv7w1qmy" path="res://Shared/white circle hollow 100 radius .png" id="6_bslyo"]
-[ext_resource type="PackedScene" uid="uid://d14gtmmc7bwav" path="res://Shared/ship_explosion_vfx.tscn" id="7_tjjas"]
+[ext_resource type="Script" uid="uid://dh7nnkrbnqq7c" path="res://src/entities/Player.gd" id="1_i261i"]
+[ext_resource type="Texture2D" uid="uid://bnsag3hf4o3hk" path="res://src/entities/ship.png" id="2_jata2"]
+[ext_resource type="Script" uid="uid://d1orpp314734n" path="res://core/components/input_movement_component.gd" id="2_okw7t"]
+[ext_resource type="Script" uid="uid://cw5bedu3t4dkc" path="res://core/components/health_component.gd" id="3_okw7t"]
+[ext_resource type="Texture2D" uid="uid://b5b60taaxpjnd" path="res://assets/VFX/particles/white circle 100 radius.png" id="5_fu4bq"]
+[ext_resource type="Texture2D" uid="uid://bo7fdkv7w1qmy" path="res://assets/VFX/particles/white circle hollow 100 radius .png" id="6_bslyo"]
+[ext_resource type="PackedScene" uid="uid://d14gtmmc7bwav" path="res://src/entities/ship_explosion_vfx.tscn" id="7_tjjas"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_yobno"]
 radius = 73.00685
